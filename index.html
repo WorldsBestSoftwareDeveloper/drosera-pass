@@ -128,7 +128,7 @@
       <div id="usernamePreview" class="username">Your Name</div>
       <div id="xPreview" class="x-handle">@yourx</div>
       <div id="discordPreview" class="discord">DiscordUser</div>
-      <div id="rolePreview" class="role">Highest Role</div>
+      <div id="rolePreview" class="role">Path</div>
     </div>
   </div>
 
@@ -147,11 +147,13 @@
 
     <label>Role</label>
     <select id="roleInput">
-      <option>Highest Role</option>
+      <option>Path</option>
       <option>Trapper</option>
       <option>Keeper</option>
       <option>Artist</option>
       <option>Writer</option>
+      <option>Mod</option>
+      <option>Founder</option>
     </select>
 
     <button class="btn" id="downloadBtn">Download Pass (JPG)</button>
@@ -195,8 +197,25 @@
   });
 
     });
+// DOWNLOAD BUTTON — only downloads
+// document.getElementById("downloadBtn").addEventListener("click", () => {
+//   html2canvas(document.getElementById("card"), { scale: 2, backgroundColor: null })
+//     .then(canvas => {
+//       const link = document.createElement("a");
+//       link.download = "drosera-pass.png";
+//       link.href = canvas.toDataURL("image/png");
+//       link.click();
+//     });
+// });
 
-    document.getElementById('shareBtn').addEventListener('click', async () => {
+// SHARE TO X BUTTON — only opens Twitter
+// document.getElementById("shareBtn").addEventListener("click", () => {
+//   const text = encodeURIComponent("Check out my #droserapass");
+//   const shareUrl = `https://twitter.com/intent/tweet?text=${text}`;
+//   window.open(shareUrl, "_blank");
+// });
+
+ document.getElementById('shareBtn').addEventListener('click', async () => {
       const canvas = await html2canvas(card, {scale: 2});
       canvas.toBlob(blob => {
         const file = new File([blob], 'drosera-pass.jpg', {type: 'image/jpeg'});
@@ -211,6 +230,8 @@
         }
       }, 'image/jpeg');
     });
+
+
   </script>
 </body>
 </html>
