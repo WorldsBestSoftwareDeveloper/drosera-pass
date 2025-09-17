@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drosera Official Pass - Controls Below</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    .card-container {
+      position: relative;
+      width: 448px;
+      height: 640px;
+      background: url("/images/drosera_template.jpg.jpg") no-repeat center/cover;
+      /* border-radius: 24px; */
+      overflow: hidden;
+      margin-bottom: 20px;
+      border-color: #ff6600;
+       clip-path: inset(0 round 24px); /* true rounded crop */
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    .avatar {
+      position: absolute;
+      top: 24.8%;
+      left: 24%;
+      transform: translateX(-50%);
+      width: 49%;
+      height: 33.7%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: none;
+    }
+
+    .username {
+      position: absolute;
+      top: 68%;
+      left: 18%;
+      width: 60%;
+      text-align: left;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.3rem;
+      font-weight: 600;
+      color: #ec8702;
+    }
+
+    .x-handle, .discord {
+      position: absolute;
+      width: 40%;
+      text-align: left;
+      font-size: 15px;
+      color: #ec8702;
+    }
+
+    .role {
+      position: absolute;
+      width: 40%;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    .x-handle { top: 76%; left: 24%; }
+    .discord { top: 81.5%; left: 24%; }
+    .role { top: 81.5%; left: 70%; }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 448px;
+      gap: 12px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .btn {
+      margin-top: 10px;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      background: #ff6600;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #e55a00;
+    }
+  </style>
+</head>
+<body>
+  <div id="card" class="card-container">
+    <div class="overlay">
+      <img id="avatarPreview" class="avatar" src="" alt="Avatar">
+      <div id="usernamePreview" class="username">Your Name</div>
+      <div id="xPreview" class="x-handle">@yourx</div>
+      <div id="discordPreview" class="discord">DiscordUser</div>
+      <div id="rolePreview" class="role">Highest Role</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <label>Upload Avatar</label>
+    <input type="file" id="avatarInput" accept="image/*">
+
+    <label>Username</label>
+    <input type="text" id="usernameInput" placeholder="Enter username">
+
+    <label>X Handle</label>
+    <input type="text" id="xInput" placeholder="@handle">
+
+    <label>Discord</label>
+    <input type="text" id="discordInput" placeholder="DiscordUser">
+
+    <label>Role</label>
+    <select id="roleInput">
+      <option>Highest Role</option>
+      <option>Trapper</option>
+      <option>Keeper</option>
+      <option>Artist</option>
+      <option>Writer</option>
+    </select>
+
+    <button class="btn" id="downloadBtn">Download Pass (JPG)</button>
+    <button class="btn" id="shareBtn">Share to X</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const usernameInput = document.getElementById('usernameInput');
+    const usernamePreview = document.getElementById('usernamePreview');
+    const xInput = document.getElementById('xInput');
+    const xPreview = document.getElementById('xPreview');
+    const discordInput = document.getElementById('discordInput');
+    const discordPreview = document.getElementById('discordPreview');
+    const roleInput = document.getElementById('roleInput');
+    const rolePreview = document.getElementById('rolePreview');
+    const card = document.getElementById('card');
+
+    avatarInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = ev => avatarPreview.src = ev.target.result;
+        reader.readAsDataURL(file);
+      }
+    });
+
+    usernameInput.addEventListener('input', () => usernamePreview.textContent = usernameInput.value);
+    xInput.addEventListener('input', () => xPreview.textContent = xInput.value);
+    discordInput.addEventListener('input', () => discordPreview.textContent = discordInput.value);
+    roleInput.addEventListener('change', () => rolePreview.textContent = roleInput.value);
+
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+        html2canvas(card, {scale: 2, backgroundColor: null}).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'drosera-pass.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+    });
+
+    document.getElementById('shareBtn').addEventListener('click', async () => {
+      const canvas = await html2canvas(card, {scale: 2});
+      canvas.toBlob(blob => {
+        const file = new File([blob], 'drosera-pass.jpg', {type: 'image/jpeg'});
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          navigator.share({
+            files: [file],
+            text: 'Check out my #droserapass',
+            title: 'Drosera Pass'
+          });
+        } else {
+          window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out my #droserapass')}`, '_blank');
+        }
+      }, 'image/jpeg');
+    });
+  </script>
+</body>
+</html>
